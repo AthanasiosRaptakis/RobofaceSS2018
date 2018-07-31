@@ -1,0 +1,29 @@
+#! /bin/bash
+dir=$(pwd)
+
+pyversion="2.7"
+#pyversion="3.4"
+#pylibs="-lpython${pyversion}m -lboost_python-py${pyversion//./} -lboost_system "
+pylibs="-lpython${pyversion} -lboost_python -lboost_system "
+pyinc="-I /usr/include/python${pyversion}"
+rapalib="-Wl,-whole-archive -lRapaPololuMaestro -Wl,-no-whole-archive"
+
+# compile c++ tests
+#g++ -std=c++11 -O3 $dir/src/emotions.cxx -I $dir/include/ -o $dir/bin/emotions -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headMove.cxx -I $dir/include/ -o $dir/bin/headMove -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/moveAll.cxx -I $dir/include/ -o $dir/bin/moveAll -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/moveOne.cxx -I $dir/include/ -o $dir/bin/moveOne -lRapaPololuMaestr#o
+#g++ -std=c++11 -O3 $dir/src/stableHeadStates.cxx -I $dir/include/ -o $dir/bin/stableHeadStates -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headTest1.cxx -I $dir/include/ -o $dir/bin/headTest1 -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headTest2.cxx -I $dir/include/ -o $dir/bin/headTest2 -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headTest3.cxx -I $dir/include/ -o $dir/bin/headTest3 -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headMoveXY.cxx -I $dir/include/ -o $dir/bin/headMoveXY -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/headMoveBorders.cxx -I $dir/include/ -o $dir/bin/headMoveBorders -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/moveLipsTest.cxx -I $dir/include/ -o $dir/bin/moveLipsTest -lRapaPololuMaestro
+#g++ -std=c++11 -O3 $dir/src/testMoveSpeed.cxx -I $dir/include/ -o $dir/bin/testMoveSpeed -lRapaPololuMaestro
+
+# compile python modules
+g++ -std=c++11 -O3 $dir/python_bindings/face.cxx -o /usr/local/lib/python2.7/dist-packages/face.o -c -fpic -I $dir/include $pyinc
+g++ -std=c++11 -O3 -shared /usr/local/lib/python2.7/dist-packages/face.o -o /usr/local/lib/python2.7/dist-packages/face.so $pylibs $rapalib
+
+#echo "$(pwd)/lib" > face.pth
