@@ -1,0 +1,456 @@
+﻿<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.content_holder{
+	overflow:auto;
+}
+
+.menu {
+  float:left;
+  width:20%;
+  text-align:center;
+  position: fixed;
+  z-index: 10;
+}
+.menu a {
+  background-color:#e5e5e5;
+  padding:8px;
+  margin-top:7px;
+  display:block;
+  width:100%;
+  color:black;
+  text-decoration: none;
+}
+
+.menu a:hover {
+  background-color:#bbb6b6;
+}
+
+.main {
+  float:left;
+  width:60%;
+  padding:0 20px;
+  margin-left:20%;
+}
+.right {
+  background-color:#e5e5e5;
+  float:left;
+  width:20%;
+  padding:15px;
+  margin-top:7px;
+  text-align:center;
+  z-index: 10;
+  margin-left: 80%;
+  position:fixed;
+}
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+.videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+	}
+
+	td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+	}
+
+	tr:nth-child(even) {
+    background-color: #efeaea;
+	}
+
+pre{
+	resize: both;
+	overflow: auto;
+	color: black;
+}
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width:100%;
+  }
+  .menu {
+    position:relative;
+    margin-left: 0%;
+  }
+  .main {
+    margin-left: 0%;
+  }
+  .right {
+    position:relative;
+	margin-left: 0%;
+  }  
+}
+</style>
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div class="content_holder">
+  <div class="menu">
+    <a href="#task">Project task</a>
+	<a href="#problems">Problems occurred</a>
+    <a href="#result">Results</a>	
+	<a href="#source">Source code</a>
+	<a href="#manual">Using Manual</a>
+	<a href="#outlook">Outlook</a>
+    <a href="#media">Pictures and videos</a>
+  </div>
+
+  <div class="main">
+	<h2 id="task">Project task</h2>	
+		
+	<p>Implementation of lip movement following speech synthesis</p>
+    <p>Improvement/Replacement of lip material</p>
+	<p>Improvement/Replacement of neck joint</p>
+	<p>Smooth "Pose-to-Pose" transition functionality through speed control</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/WP_20171115_14_05_39_Pro.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+		
+	<h2 id="problems">Problems occurred</h2>
+	
+	<h4>Unmapped Motors</h4>
+	<p>In order to make a python script for controlling robot parts we had to made a small experiment. We sent a signal for each connected port one by one and 
+	looked which part of the robot moved. We could reconnect servo-motors as we want, but there was predefined emotions already implemented for this specific setup.
+	</p>
+	<h4>Speech synthesizer</h4>
+	<p>An internet-dependent libriary gTTS was used for communication. Our goal was to find an alernative to this implementation and rework a python script.
+	</p>
+	<h4>Lip articulation</h4>
+	<p>Phrases has to be translated into motor movements. Our first approach was very basic - we made a dictionary for each latin letter, where key = [A], value = [10], for example. For the value 
+	we assumed the amplitude of lips opening. This approach faced several problems:
+	</p>
+	<p>Sound and lips movement was executed one after another.</p>
+	<p>Lips was moving without human-like expression. We could correct our amplitude dictionary, but this is not the way it should look like.</p>
+	<h4>Envelop detection</h4>
+	<p>The one of possible outputs of Espeak synthesizer is .wav file. We decode .wav file into envelope of an oscillating signal with the help of scipy libriary and get too many commands sended to the controller. This produced a problem with lips movement.</p>
+	<h4>Making Lips</h4>
+	<p>We tried to 3d print plastic lips, the material was flexible but not elastic-stretchy enough. Solution has also be robust  because this part of the robot had to move often.</p>
+	<h4>Python class for Face</h4>
+	<p>For making python script more user-friendly we tried to implement python class. It has issues with locking main program process during phrase execution.
+	Implementation is avaliable for refactoring under the project folder Roboface/RoboFace17_Final_Version/Roboface2017/run.py. As this was an additional goal, we do not finish it.</p>
+	<h2 id="result">Results</h2>
+	
+	<h4>Motors mapping</h4>
+	<p>This results allowed us to write several new functions for setting speed and moving groups of motors. Table with port number and robot part
+	presented below:</p>
+	<table>
+	  <tr>
+		<th>Port Number</th>
+		<th>Robot Part</th>
+	  </tr>
+	  <tr>
+		<th>0 and 1</th>
+		<th>Head (left-right)</th>
+	  </tr>
+	  <tr>
+		<td>2</td>
+		<td>Right ear</td>
+	  </tr>
+	  <tr>
+		<td>3</td>
+		<td>Right top lip</td>
+	  </tr>
+	  <tr>
+		<td>4</td>
+		<td>Eyes (right-left)</td>
+	  </tr>
+	  <tr>
+		<td>5</td>
+		<td>Left brow</td>
+	  </tr>
+	  <tr>
+		<td>6</td>
+		<td>Right bottom lip</td>
+	  </tr>
+	  <tr>
+		<td>7</td>
+		<td>Left ear</td>
+	  </tr>
+	  <tr>
+		<td>8</td>
+		<td>Right brow</td>
+	  </tr>
+	  <tr>
+		<td>9</td>
+		<td>Left bottom lip</td>
+	  </tr>
+	  <tr>
+		<td>10</td>
+		<td>Left top lip</td>
+	  </tr>
+	  <tr>
+		<td>12</td>
+		<td>Eyes (up-down)</td>
+	  </tr>
+	</table>	
+	<h4>Servo speed control</h4>
+	<p>For speed control we implemented several functions for different motors group (ears, eyes, head, lips, etc.). This is an example from face.h file:</p>
+	<p><pre>
+			void setSpeedLips(int v)
+			{
+				serialInterface_->setSpeedCP(10,v);
+				serialInterface_->setSpeedCP(9,v);		
+						serialInterface_->setSpeedCP(6,v);
+						serialInterface_->setSpeedCP(3,v);
+			}			
+	</pre></p>
+	<p>It also has to be an interface for the python script like this:</p>
+	<pre>
+		    .def("setSpeedLips", &Face::setSpeedLips, (arg("v")), "Set Speed of Lips ")  
+	</pre>
+	<p>The servo motor (or group of motors) speed can be set in the range from 0 to 100. Code example:</p>
+	<pre>
+	    # Set Speed for smoother movement
+		roboFace.setSpeedAll(100)
+		roboFace.setSpeedHead(80)
+	</pre>
+	<h4>Test to speech Synthesizer</h4>
+	<p>As synthesizer we choose eSpeak. It works by formant synthesis technologie which provides us with some benefits:</p>
+	<ul>
+		<li><p>speech output is created using additive synthesis and an acoustic model</p></li>
+		<li><p>can be used in embedded systems, where memory and microprocessor power are especially limited</p></li>
+	</ul>
+	<p>Synthesis method consist of text to phoneme translation. First, the input text is translated into pronunciation phonemes then pronunciation phonemes are synthesized into sound.
+       As output eSpeak creates voiced speech sounds such as vowels and sonorant consonants by additive synthesis adding together sine waves to make the total sound.</p>
+	<p>Simple additive synthesis example for two sounds:</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/Additive_expl.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<h4>Lip articulation</h4>
+	<p>With the help of eSpeak we can obtain .wav file from text. The idea is to analyze an Upper Signal Envelope. In physics and engineering, the envelope of an oscillating signal is a smooth curve outlining its extremes.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/Upper_evelope.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Analysing of .wav file consists of several steps. At first we need to apply a maximum filter with a sliding window of 1000 samples. After that, a result is smoothed by a Gaussian filter. 
+		We normalize the Output between Amplitude 0 – 10. In order to avoid the problem with too many sended commands to the servos, we undersample the Amplitude based on the desirable “SleepTime” of servo motors. 
+		(SleepTime = the time in seconds between two consecutive points in the reference trajectory.)
+		As a result we get an Undesampled Amplitude trajectory, the Reference Signal to servo motors.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/Undersample.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Python code in which 'test.wav' file generates from eSpeak interface:</p>
+	<pre>
+			A = "espeak -z -s 80 -v female5 -w test.wav "
+			A = A + "'" + phrase + "'"
+			os.system(A)
+	</pre>
+	<p>For this we implemented a python function which analyse 'test.wav' file and generates [Ampltude,Time] dictionary:</p>
+	<pre>
+		def Undersampled_Lip_Tragectory(phrase, Sleep_Time):
+			A = "espeak -z -s 80 -v female5 -w test.wav "
+			A = A + "'" + phrase + "'"
+			os.system(A)
+			samplerate, data = wavfile.read('test.wav')
+			dt = 1 / float(samplerate)
+			times = np.arange(len(data)) / float(samplerate)
+			N = len(times)
+			max_data = maximum_filter1d(data, size=1000)
+			max_data = gaussian_filter(max_data, sigma=100)
+			max_Amplitude = 10
+			Amplitude = max_Amplitude * (max_data / float(np.max(max_data)))
+			n = Sleep_Time * samplerate
+			Amp = []
+			T = []
+			i = 0
+			while (i * n < N):
+				Amp.append(Amplitude[int(i * n)])
+				T.append(times[int(i * n)])
+				i = i + 1
+
+			Amp = np.array(Amp)
+			T = np.array(T)
+
+			return Amp, T
+	</pre>
+	<h4>Speech-Lip Movement Synchronization</h4>
+	<p>We used thread-based parallelism and an internal flag for Thread Synchronization to solve this problem. Schema of the algorithm:</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/Schema.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Code implementation for the MoveLips:</p>
+	<pre>
+		def MoveLips(Sleep_Time, Amplitude, flag):
+			roboFace.setSpeedLips(127)
+			i = 0
+			while flag.isSet() and i < len(Amplitude):
+				roboFace.moveLips(int(Amplitude[i]))
+				sleep(Sleep_Time)
+				i = i + 1
+
+			if ~flag.isSet():
+				roboFace.moveLips(0)
+				sleep(0.05)
+	</pre>
+	<p>Code implementation for the Talk:</p>
+	<pre>
+		def Talk(phrase, flag):
+			A = "espeak -z -s 80 -v female5 "
+			A = A + "'" + phrase + "'"
+			os.system(A)
+			flag.clear()
+	</pre>
+	<p>Code implementation for the Say:</p>
+	<pre>
+		def say(phrase, flag):
+			phrase = phrase.replace("'", " ")
+			flag.set()
+			Sleep_Time = 0.05
+			Amplitude, Time = Undersampled_Lip_Tragectory(phrase, Sleep_Time)
+			thread_movement = Thread(target=MoveLips, args=(Sleep_Time, Amplitude, flag))
+			thread_talk = Thread(target=Talk, args=(phrase, flag))
+			thread_talk.start()
+			thread_movement.start()
+	</pre>
+	<p>In a result, lips movement actions and sound reproducing executes simultaneously.</p>
+	<h4>Soft Silicon Lips</h4>
+	<p>All attemts of lips 3-D printing failed. After that we designed and 3D-printed a plastic mold. This mold serve as a tool for casting lips made by Silicon Rubber.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/WP_20180313_16_24_48_Pro.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>The mold filled with silicon:</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/WP_20180313_16_26_01_Pro.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>As a result we obtained soft lips for our project:</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/Lips.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<h5>Neckjoint and Base repair</h5>
+	<p>Neck Joint design goals:</p>
+	<ul>
+		<li><p>High freedom of Movement</p></li>
+		<li><p>Easy Assembly and Disassembly</p></li>
+		<li><p>Easy to Manufacture</p></li>
+	</ul>
+	<p>Base design goals:</p>
+	<ul>
+		<li><p>Adequate Robustness</p></li>
+	</ul>
+	<p>For this purpouse we used computer-aided design (CAD), which  is the use of computer systems to aid in the creation, modification, analysis, or optimization of a design.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/cad.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>In addition, ears and brows was also printed on 3-D printer.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/details.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>A box for servo controller fixed on the head for optimising wireing connections.</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/box.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Base for the construction was hardened by metal rod:</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/base2.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>and fixed</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/base1.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Neckjoint has two pieces:</p>	
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/joint1.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>And attached to the base:</p>	
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/joint2.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>As a result we obtained robust hardware and a pretty good design.</p>
+	
+	<h2 id="source">Source code</h2>
+	<p>Project is avaliable under github: </p>
+	<a href="https://github.com/Quantico-VH/Roboface">RoboFace</a>
+	<p>Ececutable python scripts, C++ test binaries and source codes you can find under Roboface/RoboFace17_Final_Version/</p>
+	<p>Additionaly, there are links to the RapaPololuMaestro library.</p>
+	<ul>
+		<li><a href="https://github.com/pololu/pololu-usb-sdk">https://github.com/pololu/pololu-usb-sdk</a></li>
+		<li><a href="https://github.com/jbitoniau/RapaPololuMaestro">https://github.com/jbitoniau/RapaPololuMaestro</a></li>
+	</ul>
+	
+	<h2 id="manual">Using Manual</h2>
+	
+	<h4>Installation from scratch</h4>
+	<p>Detailed information about setting up the basic environment described <a href="http://joanna.iwr.uni-heidelberg.de/projects/2016WS_ROBOFACE/Templates/docu.html">here</a></p>
+	<h4>Using existing environment</h4>
+	<h5>Hardware</h5>
+	<p>Power supply - Minimum operating voltage: 5 V, Maximum operating voltage: 16 V</p>
+	<p>Plug in USB-cabel and USB-camera after operating system is fully loaded.</p>
+	<h5>Software</h5>
+	<p>Project folder: /home/robotsnake/RoboFace17. After changing C++ source code or python interface source file compilation is required. Bash script for automated compilation is in the  'install' file. After compilation copy paste the face.o and face.so at /home/robotsnake/RoboFace/lib folder.
+	<p>Commands for environment activation and script execution:</p>
+	<pre>
+		cd ~/RoboFace17
+		source activate roboface
+		cd face_detection
+		python run2017_2.py
+	</pre>
+	<p>Scripts used for presentation session:</p>
+	<p>/home/robotsnake/RoboFace17/Demo.py</p>  
+	<p>/home/robotsnake/RoboFace17/face_detection/run2017_2.py</p>
+	<p>C++ binaries could be found under Roboface17/RoboFace17_Final_Version/bin/. There are some usefull tests for quick functionality check.</p>
+	<p>Files shich was used for 3-D printing can be found under Roboface/RoboFace17_Final_Version/STL_Files_for_3d_Printing/.</p>
+	
+	<h2 id="outlook">Outlook</h2>
+	
+	<p>Currently, robot can not move it's head in 2-D plane. Better Neck Joint with two degrees of freedom will provide more functionality and add benefits to human-robot interaction.<p>
+	<p>Espeak libriary has SSML support. This feature greatly increase a level of human-robot interaction by voice intonation, language and dialect.</p>
+	<h2 id="media">Pictures and videos</h2>
+	<h5>Photos</h5>
+	<p>Controller</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/WP_20171127_12_18_50_Pro.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<p>Roboface</p>
+	<div style="margin: auto;width:80%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<img src="../Pictures/WP_20180216_16_36_27_Pro.jpg" style="max-width:100%; display: block;"></img>
+	</div>
+	<h5>Interaction with human</h5>
+	<p>Final result produced by the 'run2017_2.py' script. Input from USB camera produce a response which supported with sound and lips movement.</p>
+	<div style="margin: auto;width:90%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<iframe width="100%" height="300" src="https://www.youtube.com/embed/tT1UPqY_rLw" frameborder="0" allowfullscreen=""></iframe>
+	</div>
+	<p>Result produced by the 'Demo.py' script.</p>
+	<div style="margin: auto;width:90%;max-width:400px;box-shadow:0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;">
+		<iframe width="100%" height="300" src="https://www.youtube.com/embed/RLvAou7uvSU" frameborder="0" allowfullscreen=""></iframe>
+	</div>
+		
+
+    
+  </div>
+
+  <div class="right">
+    <h2>Lip Articulation for RoboFace</h2>	
+	<p>Winter Semester 2017/2018</p>	
+    <h3>Supervisors:</h3>	
+	<p>Benjamin Reh, Head of the Robotics Lab</p>
+	<p>Simon Kohlhepp, Supervising Tutor</p>
+	<h3>Team:</h3>
+	<p>Raptakis Athanasios, Msc. Scientific Comuting 2-nd semester</p>
+	<p>Viacheslav Honcharenko, Msc. Scientific Comuting 3-rd semester</p>
+  </div>
+</div>
+
+<div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">powered by Quantico-VH</div>
+
+</body>
+</html>

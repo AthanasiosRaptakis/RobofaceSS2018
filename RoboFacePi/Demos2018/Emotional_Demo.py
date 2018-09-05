@@ -105,22 +105,35 @@ def Emotional_Speech(instructions):
             roboFace.unsure(movelips = False)
         elif emotion=='neutral':
             roboFace.neutral(movelips = False)
+        elif emotion=='moveleft':
+            roboFace.moveHeadX(0)
+        elif emotion=='moveright':
+            roboFace.moveHeadX(950)
         else:
             print('*** ERROR ***')
             print("Invalid syntax or argument, emotions should be 'happy','sad','angry','unsure','neutral' ")
             break
-        Say(phrase)
+        if phrase!="silence":
+            Say(phrase)
         sleep(float(pause_time))
 
 
 #Create an Instance of Roboface class
-roboFace = face.Face(x_weight=0.8, y_weight=0.2)
-roboFace.setSpeedAll(80) 
+roboFace = face.Face()
+roboFace.setSpeedAll(60) 
 roboFace.neutral()
 sleep(1)
+
 #Give a set of instructions
-instructions = '<happy> Hi! My name is Roboface! (0.1) <neutral> How are you? (0.3) <sad> I am very sad! (1) <angry> And angry! (0) <unsure> I am not sure if I like you (0)'
+instructions = '<happy> Hi! My name is Roboface! (0.1) <neutral> How are you? (0.3) <sad> I am very sad! (1) <angry> And angry! (0) <unsure> I am not sure if I like you (0) <moveleft> Moving head left (1) <moveright> Moving head right (1) <neutral>  silence (1)'
+
+
+
+
+#Give instructions to Emotional_Speech function
 Emotional_Speech(instructions)
+
+#when Speech is Over Return to neutral position
 roboFace.neutral()
 
 

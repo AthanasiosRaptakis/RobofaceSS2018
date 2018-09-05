@@ -6,13 +6,9 @@ from threading import Thread, Event
 import face
 from time import sleep, time
 import os
-from scipy.io import wavfilerenko
+from scipy.io import wavfile
 from scipy.ndimage.filters import maximum_filter1d,gaussian_filter
-import matplotlib.pyplot as plt
-from nltk.tokenize import sent_tokenize
 import string
-#download nltk punkt in order to complete nltk set-up
-#nltk.download()
 
 #Create an Instance of Roboface class
 roboFace = face.Face(x_weight=0.8, y_weight=0.2)
@@ -58,6 +54,7 @@ def Undersampled_Lip_Tragectory(phrase,Sleep_Time):
 # Thread that moves Lips
 def MoveLips(Sleep_Time, Amplitude, flag):
     roboFace.setSpeedLips(127)
+    sleep(0.5)
     i=0
     while flag.isSet() and i < len(Amplitude):
         roboFace.moveLips(int(Amplitude[i]))
@@ -77,22 +74,20 @@ def Talk(phrase, flag):
     flag.clear()
 
 #Say function which starts the two parallel threads
-def Say(text):
-    phrases=sent_tokenize(text)
-    for phrase in phrases:
-            phrase=phrase.replace("'"," ")
-	    flag = Event()
-	    flag.set()
-            Sleep_Time=0.05
-	    Amplitude,Time=Undersampled_Lip_Tragectory(phrase,Sleep_Time)
-	    
+def Say(phrase):
+        phrase=phrase.replace("'"," ")
+        flag = Event()
+        flag.set()
+        Sleep_Time=0.05
+        Amplitude,Time=Undersampled_Lip_Tragectory(phrase,Sleep_Time)
+        
 
-	    thread_movement = Thread(target=MoveLips, args=(Sleep_Time, Amplitude, flag))
-	    thread_talk = Thread(target=Talk, args=(phrase, flag))
-	    thread_talk.start()
-	    thread_movement.start()
-	    thread_talk.join()
-	    thread_movement.join()
+        thread_movement = Thread(target=MoveLips, args=(Sleep_Time, Amplitude, flag))
+        thread_talk = Thread(target=Talk, args=(phrase, flag))
+        thread_talk.start()
+        thread_movement.start()
+        thread_talk.join()
+        thread_movement.join()
 
 
 #Example - Demo of the Robot
