@@ -1,18 +1,10 @@
 The Lip Articulation for roboface was implemented by Athanasios Raptakis 
 and Viacheslav Honcharenko during WS/2017. 
 
-we have implemented new C++ functions and imported them in python you will find the source code at
-/home/robotsnake/RoboFace17
-
-to install it you need to run the install file and then copy paste the face.o and face.so at /home/robotsnake/RoboFace/lib (the old folder)
-
 In order to use the Lip Articulation functionality you need to include the following code 
 and the correct dependencies to your code. Then you use say() function which starts the threads etc.
 
-As an example you can see the /home/robotsnake/RoboFace17/Demo.py and  
-/home/robotsnake/RoboFace17/face_detection/run2017_2.py
-
-
+As an example you can see the 
 
 
 import numpy as np
@@ -25,8 +17,6 @@ from scipy.ndimage.filters import maximum_filter1d,gaussian_filter
 import matplotlib.pyplot as plt
 from nltk.tokenize import sent_tokenize
 import string
-#download nltk punkt in order to complete nltk set-up
-#nltk.download()
 
 #The Lip trajectory is generated
 def Undersampled_Lip_Tragectory(phrase,Sleep_Time):
