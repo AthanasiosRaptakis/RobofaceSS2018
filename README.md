@@ -12,13 +12,14 @@ way to creat quick custom demos for the robot.
 
 #COMMANDS to start
 
-# for the Interactive Gui version 
+#for the interactive GUI version
 cd Desktop/RoboFacePi/face_detection/
 python2 run_pi_gui.py 
 
-(or python2 run_pi.py for the non gui version optimised for raspberry pi 3 B+)
+#the classic non gui version
+python2 run_pi.py 
 
-#for the parser Demo 
+#for the parser Demo - you can change this to make more demos
 cd Desktop/RoboFacePi/Demos2018/
 python2 New_Demo.py 
 
